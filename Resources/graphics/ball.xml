@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:b67072bff846fb1e8c9f0a4f96a3b13b:1/1$ -->
+<Imageset Name="ball" Imagefile="ball.png" NativeHorzRes="200" NativeVertRes="1807" AutoScaled="false">
+    <Image Name="ball01" XPos="0" YPos="0" Width="200" Height="200"/>
+    <Image Name="ball02" XPos="0" YPos="200" Width="200" Height="200"/>
+    <Image Name="ball03" XPos="0" YPos="400" Width="200" Height="200"/>
+    <Image Name="ball04" XPos="0" YPos="600" Width="200" Height="200"/>
+    <Image Name="earth01" XPos="0" YPos="800" Width="200" Height="200"/>
+    <Image Name="earth02" XPos="0" YPos="1000" Width="200" Height="200"/>
+    <Image Name="earth03" XPos="0" YPos="1200" Width="200" Height="200"/>
+    <Image Name="earth04" XPos="0" YPos="1400" Width="200" Height="200"/>
+    <Image Name="helix" XPos="0" YPos="1600" Width="85" Height="85"/>
+    <Image Name="propeller01" XPos="85" YPos="1600" Width="46" Height="26"/>
+    <Image Name="propeller02" XPos="131" YPos="1600" Width="46" Height="26"/>
+    <Image Name="propeller03" XPos="0" YPos="1685" Width="46" Height="26"/>
+    <Image Name="propeller04" XPos="46" YPos="1685" Width="46" Height="26"/>
+    <Image Name="shadow" XPos="0" YPos="1711" Width="180" Height="24"/>
+    <Image Name="windmill" XPos="0" YPos="1735" Width="60" Height="72"/>
+</Imageset>
