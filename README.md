@@ -2,8 +2,8 @@ Sample made with Platino Engine.
 
 This minigame guides you through the use of PlatinoEngine and how to implement simple physics with Chipmunk.
 
-https://www.youtube.com/watch?v=Kwb08b39FvM
 
+YT("https://www.youtube.com/watch?v=Kwb08b39FvM", print = TRUE)
 
 Code, sprites and music: Alejandro Rayón. Picture: Vegetable Gardens in Montmartre: La Butte Montmartre (Van Gogh)
 
