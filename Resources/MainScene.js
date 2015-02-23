@@ -14,8 +14,6 @@ function MainScene(window, game) {
 	 * DECLARING THE SCENE
 	 */
 	
-	window.fullscreen=true;
-	
 	var self = platino.createScene();
 	self.addEventListener('activated', onSceneActivated);
 	self.addEventListener('deactivated', onSceneDeactivated);	
@@ -45,7 +43,7 @@ function MainScene(window, game) {
 	var ballMoment = null;							//MOMENT
 	var ballShape = null;							//SHAPE
 	
-
+	
 	//NORMAL SPRITES
 	
 	var backgroundBack = null;
@@ -58,7 +56,7 @@ function MainScene(window, game) {
 	var earth = null;
 	
 	var shadow = null;	
-
+	
 	
 	/*
 	 * TRANSFORMS
@@ -69,7 +67,7 @@ function MainScene(window, game) {
 	/*
 	 * FLAGS
 	 */
-
+	
 	var firstTouch = true;
 	var resetting = false;
 	var timeFactor = 12;
@@ -81,7 +79,7 @@ function MainScene(window, game) {
 	
 	var hitSound = ALmixer.LoadAll('sounds/hit.mp3');
 	var music = ALmixer.LoadAll('sounds/Opening.mp3');
-
+	
 	/*
 	 * OTHER
 	 */
@@ -89,11 +87,11 @@ function MainScene(window, game) {
 	var iRandom =function(min, max){return parseInt(Math.random() * (max - min) + min);};
 	
 	var cpY = function(y) {
-			return (game.screen.height - y);
+		return (game.screen.height - y);
 	};
 	
 	var cpX = function(x) {
-			return (game.screen.width - x);
+		return (game.screen.width - x);
 	};
 	
 	var cpAngle = function(angle) {
@@ -106,24 +104,24 @@ function MainScene(window, game) {
 	 * SCENE ACTIVATED LISTENER
 	 */
 	
-    function onSceneActivated(e) {
-    	
-    	// WHEN SCENE IS ACTIVATED, STARTS THE CREATION OF ALL OBJECTS
-    	
-        Ti.API.info("Kick the ball. Main scene is activated");
+	function onSceneActivated(e) {
+		
+		// WHEN SCENE IS ACTIVATED, STARTS THE CREATION OF ALL OBJECTS
 	
-			createWorld();
-			createWalls();
-			createBackground();
-			createTransforms();
-			createBall();
-			createShadow();
-
-			game.addEventListener('touchstart', onTouchStartBall);
+		Ti.API.info("Kick the ball. Main scene is activated");
+		
+		createWorld();
+		createWalls();
+		createBackground();
+		createTransforms();
+		createBall();
+		createShadow();
+		
+		game.addEventListener('touchstart', onTouchStartBall);
+				
+		game.startCurrentScene();			
 			
-			game.startCurrentScene();			
-			
-    };
+	};
 
 
 	/*
@@ -132,59 +130,59 @@ function MainScene(window, game) {
 	
 	function createWorld(){
 		
-		space = chipmunk.cpSpaceNew();									// Allocates and initializes a cpSpace struct
-		chipmunk.cpSpaceSetGravity(space, v(0, gravity));				// Global gravity applied to the space
-		chipmunk.cpSpaceSetSleepTimeThreshold(space, 0.5);				// Time a group of bodies must remain idle in order to fall asleep
-		chipmunk.cpSpaceSetCollisionSlop(space, 0.5);					// Amount of overlap between shapes that is allowed
-		chipmunk.cpSpaceSetDamping(space,0.5);							// Amount of simple damping to apply to the space
+		space = chipmunk.cpSpaceNew();                             // Allocates and initializes a cpSpace struct
+		chipmunk.cpSpaceSetGravity(space, v(0, gravity));          // Global gravity applied to the space
+		chipmunk.cpSpaceSetSleepTimeThreshold(space, 0.5);         // Time a group of bodies must remain idle in order to fall asleep
+		chipmunk.cpSpaceSetCollisionSlop(space, 0.5);              // Amount of overlap between shapes that is allowed
+		chipmunk.cpSpaceSetDamping(space,0.5);                     // Amount of simple damping to apply to the space
 		
 		
 	};
 
 	function createWalls(){
-
+	
 		/*
-		 * Params: cpSegmentShapeNew(cpBody, cpVect a, cpVect b, cpFloat radius)
-		 * cpBody is the body to attach the segment to,
-		 * a and b are the endpoints,
-		 * radius is the thickness of the segment.
+		 *  Params: cpSegmentShapeNew(cpBody, cpVect a, cpVect b, cpFloat radius)
+		 *  cpBody is the body to attach the segment to,
+		 *  a and b are the endpoints,
+		 *  radius is the thickness of the segment.
 		 *
-		 * In Chipmunk, these are the four corners of screen.
+		 *  In Chipmunk, these are the four corners of screen.
 		 * 
-		 * 		(0,game.screen.height)	|---------floor---------|  (game.screen.width, game.screen.height)
-		 * 								|						|
-		 * 								|						|
-		 * 								|						|
-		 * 							left wall				right wall
-		 * 								|						|		 
-		 * 								|						|
-		 * 								|						|
-		 * 						(0,0)	|--------ground---------|	(game.screen.width,0)
+		 *     (0,game.screen.height)|---------floor---------|  (game.screen.width, game.screen.height)
+		 *                           |						 |
+		 *                           |						 |
+		 *                           |						 |
+		 *                       left wall              right wall
+		 *                           |						 |		 
+		 *                           |						 |
+		 *                           |						 |
+		 *                      (0,0)|--------ground---------|	(game.screen.width,0)
 		 * 
 		 * 
-		 *  cpX(0) = game.screen.width;
-		 *  cpY(0) = game.screen.height; 
+		 * cpX(0) = game.screen.width;
+		 * cpY(0) = game.screen.height; 
 		 */
+	
+		var walls = [{start:{x:0,y:cpY(0)},end:{x:0,y:0}},                    // Left wall
+					{start:{x:cpX(0),y:cpY(0)},end:{x:cpX(0),y:0}},           // Right wall
+					{start:{x:0,y:cpY(0)},end:{x:cpX(0),y:cpY(0)}},           // Floor 
+					{start:{x:0,y:100},end:{x:cpX(0),y:100}}];                // Ground (100px above ground)
 		
-		var walls = [{start:{x:0,y:cpY(0)},end:{x:0,y:0}},												// Left wall
-					 {start:{x:cpX(0),y:cpY(0)},end:{x:cpX(0),y:0}},									// Right wall
-					 {start:{x:0,y:cpY(0)},end:{x:cpX(0),y:cpY(0)}},									// Floor 
-					 {start:{x:0,y:100},end:{x:cpX(0),y:100}}];											// Ground (100px above ground)
-
-
-
+		
+		
 		for(var i=0; i< walls.length; i++){
 			
-			var wall = chipmunk.cpSegmentShapeNew(space.staticBody, v(walls[i].start.x, walls[i].start.y), v(walls[i].end.x, walls[i].end.y), 0);		
+		var wall = chipmunk.cpSegmentShapeNew(space.staticBody, v(walls[i].start.x, walls[i].start.y), v(walls[i].end.x, walls[i].end.y), 0);		
 			
-			chipmunk.cpShapeSetElasticity(wall, 1);														// Elasticity of the shape. A value of 0.0 gives no bounce, while a value of 1.0 will give a “perfect” bounce
-			chipmunk.cpShapeSetFriction(wall, 1);														// Friction coefficient, a value of 0.0 is frictionless
-			chipmunk.cpSpaceAddShape(space, wall);														// Add this shape to space
-			
+			chipmunk.cpShapeSetElasticity(wall, 1);            // Elasticity of the shape. A value of 0.0 gives no bounce, while a value of 1.0 will give a “perfect” bounce
+			chipmunk.cpShapeSetFriction(wall, 1);              // Friction coefficient, a value of 0.0 is frictionless
+			chipmunk.cpSpaceAddShape(space, wall);             // Add this shape to space
+					
 			arrayWalls.push(wall);
-			
+				
 		};	
-		
+			
 		
 	};
 	
@@ -360,8 +358,8 @@ function MainScene(window, game) {
 		// cpMomentForCircle (MASS OF BODY, INNER DIAMETER, OUTER DIAMETER, OFFSET)
 		
 		ballMoment = chipmunk.cpMomentForCircle(mass, 0, radius, v(0, 0));
-    
-	    ballBody = chipmunk.cpBodyNew(mass, ballMoment);
+   
+		ballBody = chipmunk.cpBodyNew(mass, ballMoment);
 		chipmunk.cpSpaceAddBody(space, ballBody);
 		chipmunk.cpBodySetPos(ballBody, v(ballSprite.center.x, cpY(ballSprite.center.y)));
 		
@@ -552,8 +550,8 @@ function MainScene(window, game) {
         Ti.API.info("Kick the ball main scene is deactivated");
 	
 		if (!resetting){
-	    	game.removeEventListener('touchstart', onTouchStartBall);
-        };
+			game.removeEventListener('touchstart', onTouchStartBall);
+		};
         
         // IF FIRSTTOUCH IS FALSE, THE BALL IS MOVING AND ENTERFRAME LOOP IS ACTIVE
         
@@ -565,22 +563,22 @@ function MainScene(window, game) {
          * REMOVING WALLS (STATIC BODIES) 
          */
         
-        for (var i = 0; i< arrayWalls.length; i++){
-        	
-        	chipmunk.cpSpaceRemoveShape(space, arrayWalls[i]);
+		for (var i = 0; i< arrayWalls.length; i++){
+			
+			chipmunk.cpSpaceRemoveShape(space, arrayWalls[i]);
 			chipmunk.cpShapeFree(arrayWalls[i]);
 			arrayWalls[i] = null;
-
-        };
+		
+		};
         
         arrayWalls.length = 0;
         arrayWalls = null;
 		
 		/*
-         * REMOVING THE BALL (DYNAMIC BODY) 
-         */
-        
-        chipmunk.cpSpaceRemoveShape(space, ballShape);
+		 * REMOVING THE BALL (DYNAMIC BODY) 
+		 */
+		
+		chipmunk.cpSpaceRemoveShape(space, ballShape);
 		chipmunk.cpShapeFree(ballShape);
 		ballShape = null;
 		
@@ -592,15 +590,15 @@ function MainScene(window, game) {
 		ballMoment = null;
 		
 		/*
-         * REMOVING SPRITES FROM SCENE
-         */
-        
-        earth.clearTransforms();
-        ballSprite.removeChildNode(earth);
+		 * REMOVING SPRITES FROM SCENE
+		 */
+		
+		earth.clearTransforms();
+		ballSprite.removeChildNode(earth);
 		earth.dispose();
 		earth=null;
 		
-        self.remove(ballSprite);
+		self.remove(ballSprite);
 		ballSprite.dispose();
 		ballSprite=null;
 		
@@ -641,57 +639,57 @@ function MainScene(window, game) {
 		particlesBackground = null;
 		
 		/*
-         * CLEAR TRANSFORMS
-         */
-        
-        for(var i=0; i< arrayTransforms.length; i++){
-        	
-        	arrayTransforms[i] = null;
-        	
-        };
-        
-        arrayTransforms.length = 0;
-        arrayTransforms = null;
-        
-
+		 * CLEAR TRANSFORMS
+		 */
+		
+		for(var i=0; i< arrayTransforms.length; i++){
+			
+			arrayTransforms[i] = null;
+			
+		};
+		
+		arrayTransforms.length = 0;
+		arrayTransforms = null;
+		
+		
 		/*
-         * REMOVING PHYSIC SPACE
-         */
-        
+		 * REMOVING PHYSIC SPACE
+		 */
+		
 		chipmunk.cpSpaceFree(space);
 		space = null;
 		
 		/*
-         * RELEASING SOUND
-         */
-        
+		 * RELEASING SOUND
+		 */
+		
 		ALmixer.FreeData(hitSound);
 		hitSound = null;
 		ALmixer.FreeData(music);
 		music = null;
-	
+		
 		
 		/*
-         * UNLOADING TEXTURES
-         */
-        
+		 * UNLOADING TEXTURES
+		 */
+		
 		game.unloadTexture('graphics/ball.png');
 		game.unloadTexture('graphics/backgroundTop.png');
 		game.unloadTexture('graphics/backgroundBack.png');
 		game.unloadTexture('graphics/texture.png');
 		game.unloadTexture('graphics/white.png');
-
+		
 		/*
-         * REMOVING ENVENT LISTENERS
-         */
-        
+		 * REMOVING ENVENT LISTENERS
+		 */
+		
 		self.removeEventListener('activated', onSceneActivated);
 		self.removeEventListener('deactivated', onSceneDeactivated);
 		
 		/*
-         * DELETING THE SCENE
-         */
-        
+		 * DELETING THE SCENE
+		 */
+		
 		self.dispose();
 		self = null;
 
