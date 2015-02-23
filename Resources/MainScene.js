@@ -164,10 +164,10 @@ function MainScene(window, game) {
 		 * cpY(0) = game.screen.height; 
 		 */
 	
-		var walls = [{start:{x:0,y:cpY(0)},end:{x:0,y:0}},                    // Left wall
-					{start:{x:cpX(0),y:cpY(0)},end:{x:cpX(0),y:0}},           // Right wall
-					{start:{x:0,y:cpY(0)},end:{x:cpX(0),y:cpY(0)}},           // Floor 
-					{start:{x:0,y:100},end:{x:cpX(0),y:100}}];                // Ground (100px above ground)
+		var walls = [{start:{x:0,y:cpY(0)},end:{x:0,y:0}},                     // Left wall
+		             {start:{x:cpX(0),y:cpY(0)},end:{x:cpX(0),y:0}},           // Right wall
+		             {start:{x:0,y:cpY(0)},end:{x:cpX(0),y:cpY(0)}},           // Floor 
+		             {start:{x:0,y:100},end:{x:cpX(0),y:100}}];                // Ground (100px above ground)
 		
 		
 		
