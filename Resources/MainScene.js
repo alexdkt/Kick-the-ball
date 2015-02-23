@@ -150,13 +150,13 @@ function MainScene(window, game) {
 		 *  In Chipmunk, these are the four corners of screen.
 		 * 
 		 *     (0,game.screen.height)|---------floor---------|  (game.screen.width, game.screen.height)
-		 *                           |						 |
-		 *                           |						 |
-		 *                           |						 |
-		 *                       left wall              right wall
-		 *                           |						 |		 
-		 *                           |						 |
-		 *                           |						 |
+		 *                           |                       |
+		 *                           |                       |
+		 *                           |                       |
+		 *                       left wall                right wall
+		 *                           |                       |		 
+		 *                           |                       |
+		 *                           |                       |
 		 *                      (0,0)|--------ground---------|	(game.screen.width,0)
 		 * 
 		 * 
@@ -412,11 +412,11 @@ function MainScene(window, game) {
 		
 		ballSprite.center = {x:chipmunk.cpBodyGetPos(ballBody).x,y:cpY(chipmunk.cpBodyGetPos(ballBody).y)};
 		ballSprite.angle = cpAngle(chipmunk.cpBodyGetAngle(ballBody));
-
+		
 		// Move and scale the shadow:
 		
-	    shadow.x = ballSprite.x;
-	    shadow.scale(ballSprite.y/shadow.y);
+		shadow.x = ballSprite.x;
+		shadow.scale(ballSprite.y/shadow.y);
 	        
 	    // Collision between the ball and the ground (shadow): 
 	    // This could be done with a physic collision handler, but for this situation sprite collision is easier. 
@@ -474,11 +474,11 @@ function MainScene(window, game) {
 	
 	function resetScreen(){
 		
-		resetting = true;														// Ensures resetScreen() is executed only once
+		resetting = true;                                              // Ensures resetScreen() is executed only once
 		
-		game.removeEventListener('touchstart', onTouchStartBall);				// Avoid ball touches while resetting
+		game.removeEventListener('touchstart', onTouchStartBall);      // Avoid ball touches while resetting
 
-		resetObjects();															// Put everything in origin
+		resetObjects();                                                // Put everything in origin
 		
 		setTimeout(function() {
 			
@@ -507,19 +507,19 @@ function MainScene(window, game) {
 		
 		if(ballSprite.contains(e.x*game.touchScaleX, e.y*game.touchScaleY)){
 			
-			var iX = (ballSprite.center.x - e.x*game.touchScaleX)*10;				// Detect touch position on ball
+			var iX = (ballSprite.center.x - e.x*game.touchScaleX)*10;         // Detect touch position on ball
 			
 			chipmunk.cpBodyApplyImpulse(ballBody, v(iX,3000), v(0,0)); 
 
-			counter++;																// Flag with number of ball touches
+			counter++;                                                        // Flag with number of ball touches
 
-			if(firstTouch){															// If true, the ball is stopped and enterFrame is not running
+			if(firstTouch){                                                   // If true, the ball is stopped and enterFrame is not running
 				firstTouch=false;
-				game.addEventListener('enterframe', enterFrame);					// Starts the enterframe at the first touch
+				game.addEventListener('enterframe', enterFrame);              // Starts the enterframe at the first touch
 				
 			};
 			
-			if(counter === 5){														// Starts animation on the fifth touch
+			if(counter === 5){                                                // Starts animation on the fifth touch
 				
 				whiteBackground.transform(arrayTransforms[0]);
 				var tr = platino.createTransform({duration:5000*timeFactor, alpha:1});
