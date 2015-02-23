@@ -194,10 +194,10 @@ function MainScene(window, game) {
 		
 		// The backgrounds are resized to fill the screen, we need to know this scale factor to use it later with the windmill and get the same proportional size:
 		
-		var scaleFactorX= cpX(0) / backgroundBack.width; 												// cpX(0) = game.screen.width;
-		var scaleFactorY= cpY(0) / backgroundBack.height;												// cpY(0) = game.screen.height;
+		var scaleFactorX= cpX(0) / backgroundBack.width;         // cpX(0) = game.screen.width;
+		var scaleFactorY= cpY(0) / backgroundBack.height;        // cpY(0) = game.screen.height;
 
-		backgroundBack.width = cpX(0);																	// Fill the screen with the backgrouns
+		backgroundBack.width = cpX(0);                           // Fill the screen with the backgrounds
 		backgroundBack.height = cpY(0);
 		
 		self.add(backgroundBack);
@@ -407,38 +407,38 @@ function MainScene(window, game) {
 	 */
 	
 	function enterFrame(e){
-
-		// Synchronize sprite and body (position and angle):
-		
-		ballSprite.center = {x:chipmunk.cpBodyGetPos(ballBody).x,y:cpY(chipmunk.cpBodyGetPos(ballBody).y)};
-		ballSprite.angle = cpAngle(chipmunk.cpBodyGetAngle(ballBody));
-		
-		// Move and scale the shadow:
-		
-		shadow.x = ballSprite.x;
-		shadow.scale(ballSprite.y/shadow.y);
-	        
-	    // Collision between the ball and the ground (shadow): 
-	    // This could be done with a physic collision handler, but for this situation sprite collision is easier. 
-	    
-	    if(ballSprite.collidesWith(shadow) && !resetting){
-	    	
-	    	ALmixer.PlayChannel(hitSound);
-	    	resetScreen();
-	    	
-	    };
-	    
-	    //The following code corresponds to stepPhysics(e.delta): 
-	    
-	    var fixed_dt = 1.0/TICKS_PER_SECOND;
-	    _accumulator += e.delta*0.001;
 	
-	    while(_accumulator > fixed_dt) {
-	    	chipmunk.cpSpaceStep(space, fixed_dt);
-	    	_accumulator -= fixed_dt;
-	    };
-        
-        
+	// Synchronize sprite and body (position and angle):
+	
+	ballSprite.center = {x:chipmunk.cpBodyGetPos(ballBody).x,y:cpY(chipmunk.cpBodyGetPos(ballBody).y)};
+	ballSprite.angle = cpAngle(chipmunk.cpBodyGetAngle(ballBody));
+	
+	// Move and scale the shadow:
+	
+	shadow.x = ballSprite.x;
+	shadow.scale(ballSprite.y/shadow.y);
+	    
+	// Collision between the ball and the ground (shadow): 
+	// This could be done with a physic collision handler, but for this situation sprite collision is easier. 
+	
+	if(ballSprite.collidesWith(shadow) && !resetting){
+		
+		ALmixer.PlayChannel(hitSound);
+		resetScreen();
+		
+	};
+	
+	//The following code corresponds to stepPhysics(e.delta): 
+	
+	var fixed_dt = 1.0/TICKS_PER_SECOND;
+	_accumulator += e.delta*0.001;
+	
+	while(_accumulator > fixed_dt) {
+		chipmunk.cpSpaceStep(space, fixed_dt);
+		_accumulator -= fixed_dt;
+	};
+	    
+	    
 	};
 	
 	/*
@@ -479,6 +479,8 @@ function MainScene(window, game) {
 		game.removeEventListener('touchstart', onTouchStartBall);      // Avoid ball touches while resetting
 
 		resetObjects();                                                // Put everything in origin
+		
+		ALmixer.HaltChannel(0);                                        // Clean audio
 		
 		setTimeout(function() {
 			
