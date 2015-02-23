@@ -516,6 +516,7 @@ function MainScene(window, game) {
 			counter++;                                                        // Flag with number of ball touches
 
 			if(firstTouch){                                                   // If true, the ball is stopped and enterFrame is not running
+				
 				firstTouch=false;
 				game.addEventListener('enterframe', enterFrame);              // Starts the enterframe at the first touch
 				
@@ -573,8 +574,8 @@ function MainScene(window, game) {
 		
 		};
         
-        arrayWalls.length = 0;
-        arrayWalls = null;
+		arrayWalls.length = 0;
+		arrayWalls = null;
 		
 		/*
 		 * REMOVING THE BALL (DYNAMIC BODY) 
