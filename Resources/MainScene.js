@@ -408,36 +408,36 @@ function MainScene(window, game) {
 	 */
 	
 	function enterFrame(e){
-	
-	// Synchronize sprite and body (position and angle):
-	
-	ballSprite.center = {x:chipmunk.cpBodyGetPos(ballBody).x,y:cpY(chipmunk.cpBodyGetPos(ballBody).y)};
-	ballSprite.angle = cpAngle(chipmunk.cpBodyGetAngle(ballBody));
-	
-	// Move and scale the shadow:
-	
-	shadow.x = ballSprite.x;
-	shadow.scale(ballSprite.y/shadow.y);
-	    
-	// Collision between the ball and the ground (shadow): 
-	// This could be done with a physic collision handler, but for this situation sprite collision is easier. 
-	
-	if(ballSprite.collidesWith(shadow) && !resetting){
 		
-		ALmixer.PlayChannel(hitSound);
-		resetScreen();
+		// Synchronize sprite and body (position and angle):
 		
-	};
-	
-	//The following code corresponds to stepPhysics(e.delta): 
-	
-	var fixed_dt = 1.0/TICKS_PER_SECOND;
-	_accumulator += e.delta*0.001;
-	
-	while(_accumulator > fixed_dt) {
-		chipmunk.cpSpaceStep(space, fixed_dt);
-		_accumulator -= fixed_dt;
-	};
+		ballSprite.center = {x:chipmunk.cpBodyGetPos(ballBody).x,y:cpY(chipmunk.cpBodyGetPos(ballBody).y)};
+		ballSprite.angle = cpAngle(chipmunk.cpBodyGetAngle(ballBody));
+		
+		// Move and scale the shadow:
+		
+		shadow.x = ballSprite.x;
+		shadow.scale(ballSprite.y/shadow.y);
+		    
+		// Collision between the ball and the ground (shadow): 
+		// This could be done with a physic collision handler, but for this situation sprite collision is easier. 
+		
+		if(ballSprite.collidesWith(shadow) && !resetting){
+			
+			ALmixer.PlayChannel(hitSound);
+			resetScreen();
+			
+		};
+		
+		//The following code corresponds to stepPhysics(e.delta): 
+		
+		var fixed_dt = 1.0/TICKS_PER_SECOND;
+		_accumulator += e.delta*0.001;
+		
+		while(_accumulator > fixed_dt) {
+			chipmunk.cpSpaceStep(space, fixed_dt);
+			_accumulator -= fixed_dt;
+		};
 	    
 	    
 	};
