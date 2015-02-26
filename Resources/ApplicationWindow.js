@@ -44,12 +44,22 @@ function ApplicationWindow() {
 		touchScaleX:1,                                          // TouchScaleX. Property to detect touches correctly on different resolutions (updateScreenSize) 
 		touchScaleY:1,                                          // TouchScaleY. Property to detect touches correctly on different resolutions (updateScreenSize) 
 		usePerspective:true,                                    // Sets/gets viewpoint type of the GameView (perspective or orthogonal).
-		timerType: platino.ENGINE_TIMER_NSTIMER,                // iOS-only. Gets/sets timer type for drawing
 		setupSpriteSize : function(sprite) {                    // Adjust the size of sprite for different resolutions
 			var width = sprite.width / game.screenScale;
 			var height = sprite.height / game.screenScale;
 			sprite.width = (width < 1) ? 1 : width;
 			sprite.height = (height < 1) ? 1 : height;
+		},
+		getTiScale : function(x, y) {                           // Convenience function to convert Titanium coordinate from a Platino coordinate
+			return {x: (x / game.touchScaleX),y: (y / game.touchScaleY)};
+		},
+		locationInView : function(_e) {                         // Converts screen touch event coordinates to Platino GameView coordinates
+			var e = { type:_e.type, x:_e.x, y:_e.y, source:_e.source };
+			var x = e.x * game.touchScaleX;
+			var y = e.y * game.touchScaleY;
+			e.x = x;
+			e.y = y;
+			return e;
 		}
 	
 	});
